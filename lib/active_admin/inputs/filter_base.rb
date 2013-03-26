@@ -30,8 +30,8 @@ module ActiveAdmin
       # Returns the default label for a given attribute
       # Will use ActiveModel I18n if possible
       def humanized_method_name
-        if object.base.respond_to?(:human_attribute_name)
-          object.base.human_attribute_name(method)
+        if base.respond_to?(:human_attribute_name)
+          base.human_attribute_name(method)
         else
           method.to_s.send(builder.label_str_method)
         end
@@ -39,8 +39,13 @@ module ActiveAdmin
 
       # Returns the association reflection for the method if it exists
       def reflection_for(method)
-        @object.base.reflect_on_association(method) if @object.base.respond_to?(:reflect_on_association)
+        base.reflect_on_association(method) if base.respond_to?(:reflect_on_association)
       end
+      
+      def base
+        @object.base if @object
+      end
+      
     end
   end
 end
